@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema(
     {
-        stdId: {
+        userId: {
             type: String,
             required: [true, 'Student ID is required'],
             unique: true,
@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema(
             unique: true,
             lowercase: true,
             trim: true,
+        },
+
+        mobile: {
+            type: String,
+            required: [true, 'Mobile is required'],  
         },
 
         password: {
