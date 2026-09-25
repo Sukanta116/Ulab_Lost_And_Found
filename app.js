@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv=require('dotenv');
+const cookieParser = require("cookie-parser");
 
 const lostRoute =require('./routes/lostRoute');
 const foundRoute =require('./routes/foundRoute');
@@ -14,6 +15,9 @@ dotenv.config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// parse cookies
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.use('/lost',lostRoute);
 app.use('/found',foundRoute);
