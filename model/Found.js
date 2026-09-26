@@ -5,7 +5,6 @@ const foundSchema = new mongoose.Schema(
         addedBy: {
            id:mongoose.Types.ObjectId,
            name : String,
-           role :String,
         },
 
         title: {
@@ -29,7 +28,7 @@ const foundSchema = new mongoose.Schema(
             type:Date,
         },
         verificationQuestions:[{
-            quesion :{
+            question :{
                 type:String,
                 required: [true,'Quesion is required'],
             },

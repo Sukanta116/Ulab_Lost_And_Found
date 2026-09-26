@@ -2,13 +2,8 @@
 const mongoose = require('mongoose');
 
 const claimSchema = mongoose.Schema({
-    lostIteam:{
-        id:mongoose.Types.ObjectId,
-        title:String,
-    },
     foundIteam:{
-        id:mongoose.Types.ObjectId, 
-        title:String,
+        id:mongoose.Types.ObjectId,
     },
     claimant:{
         id:mongoose.Types.ObjectId, //! User
@@ -18,12 +13,10 @@ const claimSchema = mongoose.Schema({
         type:Number,
           min: 0,
          max: 100,
-        required:[true,'Verification Score is required'],
     },
     status:{
         type:String,
         enum:['pending','accepted','rejected'],
-        required:[true,'Status is required'],
         default :'pending',
     },
     reason:{

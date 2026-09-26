@@ -5,7 +5,6 @@ const lostSchema = new mongoose.Schema(
         reportedBy: {
            id:mongoose.Types.ObjectId,
            name : String,
-           role :String,
         },
 
         title: {
@@ -31,7 +30,6 @@ const lostSchema = new mongoose.Schema(
         status:{
             type:String,
             enum:['active','matched','recovered'],
-            required: [true,'Satuts Must be use'],
             default :'active',
         },
     },
