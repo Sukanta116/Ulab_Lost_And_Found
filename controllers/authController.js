@@ -54,7 +54,7 @@ const loginController = async (req, res) => {
         }
 
         const newUser = {
-            id: user.userId,
+            id: user._id,
             name: user.name,
             role: user.role,
         };
