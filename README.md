@@ -1,430 +1,146 @@
-# ULAB Lost and Found
+# 🔎 ULAB Lost & Found
 
-A backend REST API for managing lost and found items within the **University of Liberal Arts Bangladesh (ULAB)** community.
+<p align="center">
+  <strong>A REST API for managing lost and found items within the ULAB community.</strong>
+</p>
 
-The system allows students to report lost items, while authorized staff can register found items, create item-specific verification questions, and review ownership claims.
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-24.x-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
+  <img src="https://img.shields.io/badge/Express.js-5.x-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express.js">
+  <img src="https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+  <img src="https://img.shields.io/badge/Mongoose-ODM-880000?style=for-the-badge" alt="Mongoose">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/JWT-Authentication-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" alt="JWT">
+  <img src="https://img.shields.io/badge/Postman-API%20Testing-FF6C37?style=for-the-badge&logo=postman&logoColor=white" alt="Postman">
+  <img src="https://img.shields.io/github/license/Sukanta116/Ulab_Lost_And_Found?style=for-the-badge" alt="License">
+</p>
 
 ---
 
-## 📌 Problem Statement
+## 📖 About
 
-Students often lose personal belongings inside or around campus. A traditional lost-and-found process can make it difficult to:
+**ULAB Lost & Found** is a backend REST API designed to help the ULAB community manage lost and found items.
 
-- Report lost items properly
-- Maintain records of found items
-- Match lost and found items
-- Verify whether a claimant is the actual owner
-- Maintain a record of claim decisions
+Students can report lost items, submit claims for found items, and answer verification questions. Authorized staff can manage found items and review ownership claims, while administrators can manage users and their roles.
 
-**ULAB Lost and Found** provides a centralized backend system to manage this process.
+The project focuses on practical backend development concepts including **REST APIs, authentication, authorization, validation, MongoDB, and business logic**.
 
 ---
 
-## 🚀 Main Features
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
 
 ### 👨‍🎓 Student
 
-- Register and login
-- Report lost items
-- View lost and found items
-- Submit a claim for a found item
-- Answer verification questions
-- Track claim status
+- 🔐 Register & Login
+- 📦 Report lost items
+- 🔍 Browse lost & found items
+- 📝 Submit item claims
+- ❓ Answer verification questions
+- 📊 Track claim status
+
+</td>
+<td width="50%">
 
 ### 👨‍💼 Staff
 
-- Register found items
-- Upload pictures of found items
-- Create verification questions for each found item
-- Review claims
-- Review automatic verification results
-- Approve or reject claims
-- Mark items as returned
+- 📥 Register found items
+- 🖼️ Add item information & photos
+- ❓ Create verification questions
+- 🔎 Review ownership claims
+- ✅ Approve claims
+- ❌ Reject claims
+- 📦 Mark items as returned
 
-### 🔐 Authentication & Authorization
+</td>
+</tr>
 
-- JWT-based authentication
-- Password hashing with bcrypt
-- Protected routes
-- Role-based authorization
-- Student and staff permissions
+<tr>
+<td>
 
----
+### 🛡️ Security
 
-# 🧠 Claim Verification
+- 🔑 JWT authentication
+- 🔒 Password hashing with bcrypt
+- 🍪 HTTP-only cookies
+- 🚧 Protected routes
+- 👥 Role-based authorization
+- ✅ Request validation
+- 🔐 Ownership checks
 
-The system uses a combination of **rule-based automatic verification** and **staff review**.
+</td>
+<td>
 
-### Example
+### 👑 Admin
 
-Staff registers a found wallet:
+- ➕ Add users
+- ✏️ Update users
+- 🗑️ Delete users
+- 👥 Manage user roles
+- 🔐 Control access to admin features
 
-```text
-Question: What color was the wallet?
-Type: color
-Expected Answer: black
-
-Question: How many cards were inside?
-Type: number
-Expected Answer: 2
-```
-
-A student submits answers.
-
-The backend normalizes and compares the answers instead of relying only on exact string matching.
-
-For example:
-
-```text
-Expected: Black leather wallet
-Answer:   black leather wallet
-→ Match
-```
-
-For suitable text questions, equivalent/common words can also be handled using rule-based matching.
-
-The system produces a verification score:
-
-```text
-2 / 3 answers matched
-Verification Result: Passed
-```
-
-The **final decision remains with staff**.
-
-```text
-Student Answer
-      ↓
-Automatic Verification
-      ↓
-Verification Score
-      ↓
-Staff Review
-      ↓
-Approve / Reject
-```
+</td>
+</tr>
+</table>
 
 ---
 
-# 🗄️ Database Design
+## 🔄 Claim Verification
 
-The project uses **MongoDB with Mongoose**.
-
-The system intentionally uses **4 main collections**:
+The system supports a verification process for ownership claims.
 
 ```text
-┌──────────────────┐
-│      Users       │
-├──────────────────┤
-│ _id              │
-│ studentId        │
-│ name             │
-│ email            │
-│ password         │
-│ role             │
-└────────┬─────────┘
-         │
-         │ 1 : N
-         │
-    ┌────┴───────────────┐
-    ↓                    ↓
-┌───────────┐      ┌────────────┐
-│   Lost    │      │   Found    │
-├───────────┤      ├────────────┤
-│ _id       │      │ _id        │
-│ reportedBy│      │ addedBy    │
-│ title     │      │ title      │
-│ category  │      │ category   │
-│ photos[]  │      │ photos[]   │
-│ location  │      │ questions[]│
-│ lostDate  │      │ status     │
-│ status    │      └─────┬──────┘
-└─────┬─────┘            │
-      │                   │
-      └────────┬──────────┘
-               ↓
-        ┌──────────────┐
-        │    Claims    │
-        ├──────────────┤
-        │ _id          │
-        │ lostItem     │
-        │ foundItem    │
-        │ claimant     │
-        │ score        │
-        │ result       │
-        │ status       │
-        │ reason       │
-        │ reviewedBy   │
-        └──────────────┘
+┌──────────────────────┐
+│   Student submits    │
+│        claim         │
+└──────────┬───────────┘
+           ↓
+┌──────────────────────┐
+│ Verification         │
+│ questions & answers  │
+└──────────┬───────────┘
+           ↓
+┌──────────────────────┐
+│ Answer verification  │
+└──────────┬───────────┘
+           ↓
+┌──────────────────────┐
+│    Staff review      │
+└──────────┬───────────┘
+           ↓
+     ┌─────┴─────┐
+     ↓           ↓
+  ✅ Approve   ❌ Reject
 ```
 
-### Relationships
-
-```text
-User ──────< Lost
-User ──────< Found
-User ──────< Claims
-
-Lost ──────< Claims
-Found ─────< Claims
-```
-
-MongoDB references are implemented using Mongoose `ObjectId` and `ref`.
-
-Example:
-
-```js
-reportedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
-}
-```
+The verification result helps staff make an informed decision about an ownership claim.
 
 ---
 
-# 📦 Collections
+## 🛠️ Tech Stack
 
-## 1. Users
-
-Stores students, staff, and administrators.
-
-```text
-_id
-studentId
-name
-email
-password
-role
-isActive
-createdAt
-updatedAt
-```
-
-Roles:
-
-```text
-user
-staff
-admin
-```
+| Technology               | Purpose            |
+| ------------------------ | ------------------ |
+| 🟢 **Node.js**           | JavaScript runtime |
+| ⚡ **Express.js**        | REST API framework |
+| 🍃 **MongoDB**           | Database           |
+| 🦫 **Mongoose**          | MongoDB ODM        |
+| 🔐 **JWT**               | Authentication     |
+| 🔒 **bcrypt**            | Password hashing   |
+| ✅ **Express Validator** | Request validation |
+| 📮 **Postman**           | API testing        |
+| 🐙 **Git & GitHub**      | Version control    |
 
 ---
 
-## 2. Lost
+## 📌 API Modules
 
-Stores items reported as lost by students.
-
-```text
-_id
-reportedBy → User
-title
-category
-description
-lostLocation
-lostDate
-status
-createdAt
-updatedAt
-```
-
-Possible status:
-
-```text
-active
-matched
-recovered
-```
-
----
-
-## 3. Found
-
-Stores items registered by staff.
-
-```text
-_id
-addedBy → User
-title
-category
-description
-foundLocation
-foundDate
-photos[]
-
-verificationQuestions[]
-    ├── question
-    ├── questionType
-    ├── expectedAnswer
-    └── required
-
-status
-createdAt
-updatedAt
-```
-
-### Question Types
-
-```text
-text
-color
-number
-yes_no
-multiple_choice
-```
-
-Example:
-
-```js
-verificationQuestions: [
-  {
-    question: "What color was the wallet?",
-    questionType: "color",
-    expectedAnswer: "black",
-    required: true,
-  },
-  {
-    question: "How many cards were inside?",
-    questionType: "number",
-    expectedAnswer: "2",
-    required: true,
-  },
-];
-```
-
-The verification questions are embedded inside the `Found` document because they belong specifically to that found item.
-
----
-
-## 4. Claims
-
-Stores ownership claims and their verification results.
-
-```text
-_id
-lostItem → Lost
-foundItem → Found
-claimant → User
-
-verificationScore
-verificationResult
-status
-reason
-
-reviewedBy → User
-reviewedAt
-
-createdAt
-updatedAt
-```
-
-Possible statuses:
-
-```text
-pending
-approved
-rejected
-```
-
-Possible verification results:
-
-```text
-passed
-failed
-```
-
----
-
-# 🔄 System Workflow
-
-```text
-Student
-   │
-   ├── Register / Login
-   │
-   └── Report Lost Item
-            │
-            ↓
-        Lost Collection
-            │
-            │
-            ↓
-       Possible Match
-            │
-            ↓
-       Found Collection
-            │
-            ↓
-       Submit Claim
-            │
-            ↓
-   Automatic Verification
-            │
-            ↓
-      Verification Score
-            │
-            ↓
-       Staff Review
-         /       \
-        ↓         ↓
-    Approved    Rejected
-        │
-        ↓
-   Item Returned
-```
-
----
-
-# 🏗️ Project Architecture
-
-The project follows the **MVC architecture**.
-
-```text
-ulab-lost-and-found/
-│
-├── controllers/
-│   ├── authController.js
-│   ├── lostController.js
-│   ├── foundController.js
-│   └── claimController.js
-│
-├── models/
-│   ├── User.js
-│   ├── Lost.js
-│   ├── Found.js
-│   └── Claim.js
-│
-├── routes/
-│   ├── authRoutes.js
-│   ├── lostRoutes.js
-│   ├── foundRoutes.js
-│   └── claimRoutes.js
-│
-├── middlewares/
-│   ├── authMiddleware.js
-│   ├── roleMiddleware.js
-│   ├── validationMiddleware.js
-│   └── errorMiddleware.js
-│
-├── utils/
-│   └── ...
-│
-├── config/
-│   └── db.js
-│
-├── app.js
-├── server.js
-├── .env
-├── .gitignore
-├── package.json
-└── README.md
-```
-
----
-
-# 🔌 Main API Endpoints
-
-## Authentication
+### 🔐 Authentication
 
 ```http
 POST /user/register
@@ -432,7 +148,7 @@ POST /user/login
 POST /user/logout
 ```
 
-## Lost Items
+### 🔎 Lost Items
 
 ```http
 POST   /lost
@@ -442,7 +158,7 @@ PUT    /lost/:id
 DELETE /lost/:id
 ```
 
-## Found Items
+### 📦 Found Items
 
 ```http
 POST   /found
@@ -452,9 +168,7 @@ PUT    /found/:id
 DELETE /found/:id
 ```
 
-Staff-only operations will be protected by role-based authorization.
-
-## Claims
+### 📝 Claims
 
 ```http
 POST  /claims
@@ -462,140 +176,130 @@ GET   /claims/:id
 PATCH /claims/:id/review
 ```
 
-## Admin funtionalities
+### 👑 Admin
 
-POST /admin/user/
-PATCH /admin/user/:id
+```http
+POST   /admin/user
+PATCH  /admin/user/:id
 DELETE /admin/user/:id
+```
+
+> **Note:** API routes may change as the project evolves.
 
 ---
 
-# 🛠️ Technology Stack
+## 🚀 Getting Started
 
-- **Node.js**
-- **Express.js**
-- **MongoDB**
-- **Mongoose**
-- **JWT**
-- **bcrypt**
-- **Express Validator**
-- **Postman**
-- **Git & GitHub**
+### 1️⃣ Clone the repository
 
----
+```bash
+git clone https://github.com/Sukanta116/Ulab_Lost_And_Found.git
+```
 
-# 🔐 Security
+### 2️⃣ Enter the project
 
-The API implements:
+```bash
+cd Ulab_Lost_And_Found
+```
 
-- Password hashing
-- JWT authentication
-- HTTP-only cookies
-- Protected routes
-- Role-based authorization
-- Input validation
-- Secure handling of verification information
-- Ownership checks before modifying resources
+### 3️⃣ Install dependencies
 
----
+```bash
+npm install
+```
 
-# 🧪 Testing
+### 4️⃣ Configure environment variables
 
-All APIs will initially be tested using **Postman**.
+Create a `.env` file in the project root:
 
-Testing will cover:
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+COOKIE_SECRET=your_cookie_secret
+```
 
-- Registration
-- Login/logout
-- Authentication
-- Authorization
-- Lost item CRUD
-- Found item management
-- Image upload
-- Claim submission
-- Automatic verification
-- Staff approval/rejection
-- Invalid requests
-- Unauthorized access
+> ⚠️ Never commit  `.env` file to GitHub.
+
+### 5️⃣ Start the server
+
+```bash
+nodemon app
+```
 
 ---
 
-# 📈 Development Plan
+## 🧪 Testing
 
-### Phase 1 — Project Setup
+The API can be tested using **Postman**.
 
-- Express setup
-- MongoDB connection
-- Environment variables
-- MVC structure
+### Tested areas
 
-### Phase 2 — Authentication
-
-- Registration
-- Login
-- Logout
-- JWT
-- Password hashing
-- Authentication middleware
-- Role-based authorization
-
-### Phase 3 — Lost Items
-
-- Lost item CRUD
-- Image upload
-- User ownership checks
-- Validation
-
-### Phase 4 — Found Items
-
-- Staff-only management
-- Image upload
-- Verification question creation
-- Question types
-
-### Phase 5 — Claims
-
-- Submit claims
-- Match lost/found items
-- Automatic answer verification
-- Verification scoring
-- Staff review
-- Approve/reject
-
-### Phase 6 — Testing & Documentation
-
-- Postman testing
-- Error handling
-- Security improvements
-- README documentation
-- GitHub cleanup
+- ✅ User registration
+- ✅ Login & logout
+- ✅ Authentication
+- ✅ Role-based authorization
+- ✅ Lost item CRUD
+- ✅ Found item management
+- ✅ Claim submission
+- ✅ Claim verification
+- ✅ Staff approval/rejection
+- ✅ Admin user management
+- ✅ Request validation
+- ✅ Error handling
 
 ---
 
-# 🎯 Project Goal
+## 🎯 What I Practiced
 
-The goal of **ULAB Lost and Found** is to create a practical backend system that demonstrates real-world backend development concepts including:
+This project helped me work with real-world backend concepts:
 
-- REST API development
-- MVC architecture
-- MongoDB data modeling
-- Mongoose relationships
-- Authentication
-- Authorization
-- Validation
-- File uploads
-- Business logic
-- Rule-based verification
-- Role-based workflows
-- API security
+```text
+REST API
+   │
+   ├── Authentication
+   ├── Authorization
+   ├── Middleware
+   ├── Validation
+   ├── CRUD Operations
+   ├── MongoDB & Mongoose
+   ├── Business Logic
+   ├── Error Handling
+   └── API Security
+```
+
+---
+
+## 📂 Project Highlights
+
+- Clean REST API implementation
+- Authentication & role-based authorization
+- MongoDB data modeling with Mongoose
+- Protected routes and middleware
+- Claim verification workflow
+- Admin user management
+- API testing with Postman
 
 ---
 
 ## 👨‍💻 Author
 
-**Sukanta Majumder**
+### Sukanta Majumder
 
-Backend Development Project
-ULAB CSE
-**login**
-UserID and password
+**CSE Student | Backend Development Enthusiast**
+
+<p>
+  <a href="https://github.com/Sukanta116">
+    <img src="https://img.shields.io/badge/GitHub-Sukanta116-181717?style=for-the-badge&logo=github" alt="GitHub">
+  </a>
+</p>
+
+---
+
+<p align="center">
+  ⭐ If you find this project interesting, consider giving it a star!
+</p>
+
+<p align="center">
+  <sub>Built with Node.js, Express.js & MongoDB</sub>
+</p>
