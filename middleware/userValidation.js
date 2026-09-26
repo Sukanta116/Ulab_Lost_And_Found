@@ -18,7 +18,7 @@ const addUserValidator = [
      .trim(),
 
     check('email')
-     .notEmpty()
+     .notEmpty()   //? notEmpty is for required  //? optional use for not required
      .isEmail()
      .withMessage('EMail is required')
      .trim()
