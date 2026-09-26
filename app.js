@@ -8,6 +8,7 @@ const lostRoute =require('./routes/lostRoute');
 const foundRoute =require('./routes/foundRoute');
 const claimRoute =require('./routes/claimRoute');
 const authRoute =require('./routes/authRoute');
+const adminRoute =require('./routes/adminRoute');
 
 
 const app = express();
@@ -23,6 +24,7 @@ app.use('/lost',lostRoute);
 app.use('/found',foundRoute);
 app.use('/claim',claimRoute);
 app.use('/user',authRoute);
+app.use('/admin/user',adminRoute);
 
 
 //* Return a Promise
