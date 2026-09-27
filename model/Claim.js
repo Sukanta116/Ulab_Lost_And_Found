@@ -9,6 +9,13 @@ const claimSchema = mongoose.Schema({
         id:mongoose.Types.ObjectId, //! User
         name:String,
     },
+    verificationAnswer:[{
+            answer :{
+                type:String,
+                required: [true,'Answer is required'],
+            },
+        },
+        ],
     verificationScore:{
         type:Number,
           min: 0,

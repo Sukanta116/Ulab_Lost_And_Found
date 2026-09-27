@@ -45,6 +45,7 @@ The project focuses on practical backend development concepts including **REST A
 - 📊 Track claim status
 
 </td>
+
 <td width="50%">
 
 ### 👨‍💼 Staff
@@ -74,6 +75,7 @@ The project focuses on practical backend development concepts including **REST A
 - 🔐 Ownership checks
 
 </td>
+
 <td>
 
 ### 👑 Admin
@@ -87,6 +89,16 @@ The project focuses on practical backend development concepts including **REST A
 </td>
 </tr>
 </table>
+
+---
+
+## 🏗️ System Architecture
+
+The following diagram shows how requests flow through the backend, from the ULAB community to the Express routes, middleware, controllers, models, and MongoDB.
+
+<p align="center">
+  <img src="./System%20Architecture.png" alt="ULAB Lost & Found System Architecture">
+</p>
 
 ---
 
@@ -106,7 +118,7 @@ The system supports a verification process for ownership claims.
 └──────────┬───────────┘
            ↓
 ┌──────────────────────┐
-│ Answer verification  │
+│  Answer verification │
 └──────────┬───────────┘
            ↓
 ┌──────────────────────┐
@@ -171,9 +183,9 @@ DELETE /found/:id
 ### 📝 Claims
 
 ```http
-POST  /claims
-GET   /claims/:id
-PATCH /claims/:id/review
+POST  /claim
+GET   /claim/:id
+PATCH /claim/:id/review
 ```
 
 ### 👑 Admin
@@ -219,7 +231,7 @@ JWT_SECRET=your_jwt_secret
 COOKIE_SECRET=your_cookie_secret
 ```
 
-> ⚠️ Never commit  `.env` file to GitHub.
+> ⚠️ Never commit the `.env` file to GitHub.
 
 ### 5️⃣ Start the server
 
@@ -233,7 +245,7 @@ nodemon app
 
 The API can be tested using **Postman**.
 
-### Tested areas
+### Tested Areas
 
 - ✅ User registration
 - ✅ Login & logout
@@ -246,7 +258,6 @@ The API can be tested using **Postman**.
 - ✅ Staff approval/rejection
 - ✅ Admin user management
 - ✅ Request validation
-- ✅ Error handling
 
 ---
 
@@ -264,8 +275,7 @@ REST API
    ├── CRUD Operations
    ├── MongoDB & Mongoose
    ├── Business Logic
-   ├── Error Handling
-   └── API Security
+   └── Error Handling
 ```
 
 ---

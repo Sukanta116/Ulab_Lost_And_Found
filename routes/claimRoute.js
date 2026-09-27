@@ -10,7 +10,7 @@ const router = express.Router();
 router.post('/',authenticate,isStudent,postClaimItem);
 
 
-router.get('/:id',authenticate,getClaimItemById);
+router.get('/:id',authenticate,isAdminAndStaff,getClaimItemById);
 
 router.patch('/:id/review', authenticate,isAdminAndStaff,updateClaimItemById);
 

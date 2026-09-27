@@ -9,13 +9,14 @@ const Claim = require('../model/Claim');
 async function postClaimItem(req, res) {
     try {
         const data = {
-             foundIteam:{
+            foundIteam:{
                     id: req.body.id,
                 },
-                claimant:{
+            claimant:{
                     id: User._id,
                     name:User.name,
                 },
+            verificationAnswer : req.body.verificationAnswer,
         };
 
         const newData= await Claim.create(data);
@@ -83,7 +84,7 @@ async function updateClaimItemById(req, res) {
             reason,
             reviewedBy:{
                     id:User._id,
-                    name: user.name,
+                    name: User.name,
                 },
         }
 
