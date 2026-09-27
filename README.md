@@ -107,6 +107,9 @@ The following diagram shows how requests flow through the backend, from the ULAB
 <p align="center">
   <img src="./Claim Verification process.png" alt="Claim Verification Process">
 </p>
+
+---
+
 ## 🛠️ Tech Stack
 
 | Technology               | Purpose            |
