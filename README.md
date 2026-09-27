@@ -104,36 +104,9 @@ The following diagram shows how requests flow through the backend, from the ULAB
 
 ## 🔄 Claim Verification
 
-The system supports a verification process for ownership claims.
-
-```text
-┌──────────────────────┐
-│   Student submits    │
-│        claim         │
-└──────────┬───────────┘
-           ↓
-┌──────────────────────┐
-│ Verification         │
-│ questions & answers  │
-└──────────┬───────────┘
-           ↓
-┌──────────────────────┐
-│  Answer verification │
-└──────────┬───────────┘
-           ↓
-┌──────────────────────┐
-│    Staff review      │
-└──────────┬───────────┘
-           ↓
-     ┌─────┴─────┐
-     ↓           ↓
-  ✅ Approve   ❌ Reject
-```
-
-The verification result helps staff make an informed decision about an ownership claim.
-
----
-
+<p align="center">
+  <img src="./Claim Verification process.png" alt="Claim Verification Process">
+</p>
 ## 🛠️ Tech Stack
 
 | Technology               | Purpose            |
