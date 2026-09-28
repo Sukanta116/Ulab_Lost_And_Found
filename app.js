@@ -9,6 +9,7 @@ const foundRoute =require('./routes/foundRoute');
 const claimRoute =require('./routes/claimRoute');
 const authRoute =require('./routes/authRoute');
 const adminRoute =require('./routes/adminRoute');
+const {notFoundHandler,errorHandler} = require('./middleware/errorHandler');
 
 
 const app = express();
@@ -26,14 +27,16 @@ app.use('/claim',claimRoute);
 app.use('/user',authRoute);
 app.use('/admin/user',adminRoute);
 
-
 //* Return a Promise
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>console.log('Connection with database establised..'))
 .catch((err)=>console.log(err));
 
+// Not found route
+app.use(notFoundHandler);
 
-
+//Handling Default errors
+app.use(errorHandler);
 
 
 app.listen(process.env.PORT ,()=>{
