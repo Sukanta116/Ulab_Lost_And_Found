@@ -234,6 +234,7 @@ The API can be tested using **Postman**.
 - ✅ Staff approval/rejection
 - ✅ Admin user management
 - ✅ Request validation
+- ✅ Default Error Handling
 
 ---
 
